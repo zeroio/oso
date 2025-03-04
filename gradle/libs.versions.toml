@@ -1,0 +1,46 @@
+[versions]
+# Languages
+kotlin="2.1.10"
+kt="2.1"
+jdk="21"
+# Production
+fabric8-k8s = "7.1.0"
+operator-sdk = "5.0.0"
+http4k="5.46.0.0"
+logback="1.5.16"
+bc-fips="2.1.0"
+bctls-fips="2.1.20"
+bcpkix-fips="2.1.8"
+bcutil-fips="2.1.4"
+jte="3.1.16"
+password4j="1.8.2"
+# Test
+junit="5.11.4"
+
+kotest="5.9.1"
+
+[libraries]
+fabric8-k8s-client = { module = "io.fabric8:kubernetes-client", version.ref="fabric8-k8s"}
+fabric8-k8s-crdgen-api = { module = "io.fabric8:crd-generator-api-v2" , version.ref="fabric8-k8s"}
+fabric8-k8s-crdgen-collector = { module = "io.fabric8:crd-generator-collector" , version.ref="fabric8-k8s"}
+bc-fips = { module = "org.bouncycastle:bc-fips", version.ref="bc-fips" }
+bctls-fips = { module = "org.bouncycastle:bctls-fips", version.ref="bctls-fips" }
+bcpkix-fips = { module = "org.bouncycastle:bcpkix-fips", version.ref="bcpkix-fips" }
+bcutil-fips = { module = "org.bouncycastle:bcutil-fips", version.ref="bcutil-fips" }
+operator-sdk-bom = { module = "io.javaoperatorsdk:operator-framework-bom", version.ref = "operator-sdk" }
+operator-sdk-framework = { module = "io.javaoperatorsdk:operator-framework", version.ref = "operator-sdk" }
+http4k-bom = { module = "org.http4k:http4k-core", version.ref="http4k"}
+#http4k-server-undertow = { module = "org.http4k:http4k-server-undertow", version.ref="http4k"}
+#http4k-client-apache = { module = "org.http4k:http4k-client-apache", version.ref="http4k"}
+http4k-platform-k8s = { module = "org.http4k:http4k-platform-k8s", version.ref="http4k"}
+http4k-format-moshi-yaml = { module = "org.http4k:http4k-format-moshi-yaml", version.ref="http4k"}
+logback-classic = { module = "ch.qos.logback:logback-classic", version.ref="logback"}
+jte = { module = "gg.jte:jte", version.ref="jte"}
+password4j = { module = "com.password4j:password4j", version.ref="password4j"}
+# Test
+junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit" }
+junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit" }
+kotest-assertion-core-jvm = {module = "io.kotest:kotest-assertions-core-jvm", version.ref = "kotest"}
+
+[plugins]
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
