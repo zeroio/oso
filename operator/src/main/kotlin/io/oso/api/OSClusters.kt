@@ -61,6 +61,8 @@ data class SecuritySpec(
     val auth: AuthenticationSpec = AuthenticationSpec(),
     val roles: Map<String, RoleSpec> = emptyMap(),
     val users: Map<String, UserSpec> = emptyMap(),
+    val roleMapping: Map<String, RoleMappingSpec> = emptyMap(),
+    val tenants: Set<String> = emptySet(),
 )
 
 data class AuthenticationSpec(
@@ -71,6 +73,12 @@ data class AuthenticationSpec(
 data class RoleSpec(
     val clusterPermissions: Set<String> = emptySet(),
     val indexPermissions: List<IndexPermissionSpec> = emptyList(),
+)
+
+data class RoleMappingSpec(
+    val backendRoles: Set<String>,
+    val hosts: Set<String> = emptySet(),
+    val users: Set<String> = emptySet(),
 )
 
 data class IndexPermissionSpec(

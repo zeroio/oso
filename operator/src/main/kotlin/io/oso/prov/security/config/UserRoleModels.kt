@@ -2,6 +2,7 @@ package io.oso.prov.security.config
 
 import com.squareup.moshi.Json
 import io.oso.api.IndexPermissionSpec
+import io.oso.api.RoleMappingSpec
 import io.oso.api.RoleSpec
 import io.oso.api.UserSpec
 
@@ -25,7 +26,7 @@ fun UserSpec.toUser(): User = User(
     )
 
 data class Role(
-    val reserved: Boolean = false,
+    val reserved: Boolean = true,
     val hidden: Boolean = false,
     val static: Boolean = false,
     @Json(name = "cluster_permissions")
@@ -37,7 +38,7 @@ data class Role(
 )
 
 fun RoleSpec.toRole(): Role = Role(
-    reserved = false,
+    reserved = true,
     hidden = false,
     clusterPermissions = this.clusterPermissions,
     indexPermissions = this.indexPermissions.map { it.toIndexPermission() },
@@ -70,7 +71,7 @@ data class TenantPermission(
 )
 
 data class RolesMapping(
-    val reserved: Boolean = false,
+    val reserved: Boolean = true,
     val hidden: Boolean = false,
     @Json(name = "backend_roles")
     val backendRoles: Set<String> = emptySet(),
@@ -78,6 +79,14 @@ data class RolesMapping(
     val users: Set<String> = emptySet(),
     @Json(name = "and_backend_roles")
     val andBackendRoles: Set<String> = emptySet(),
+)
+
+fun RoleMappingSpec.toRoleMapping(): RolesMapping = RolesMapping(
+    reserved = true,
+    hidden = false,
+    backendRoles = this.backendRoles,
+    hosts = this.hosts,
+    users = this.users,
 )
 
 data class Tenant(
