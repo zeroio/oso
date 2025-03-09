@@ -1,4 +1,4 @@
-package io.oso.prov.configmap
+package io.oso.prov.cfgmap
 
 import io.fabric8.kubernetes.api.model.ConfigMap
 import io.fabric8.kubernetes.api.model.ConfigMapBuilder

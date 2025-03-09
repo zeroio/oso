@@ -8,7 +8,7 @@ import io.javaoperatorsdk.operator.api.reconciler.Workflow
 import io.javaoperatorsdk.operator.api.reconciler.dependent.Dependent
 import io.oso.api.OSCluster
 import io.oso.common.logger
-import io.oso.prov.configmap.ScriptConfigMap
+import io.oso.prov.cfgmap.ScriptConfigMap
 
 @Workflow(
     dependents = [
