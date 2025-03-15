@@ -27,23 +27,40 @@ class KeyInfraImplTest {
     }
 
     @Test
-    fun `generateCA should generate a valid certificate`() {
+    fun `generateRootCert should generate a valid certificate`() {
         val keyPair: KeyPair = sut.generateKeyPair()
         val validFrom = Instant.ofEpochSecond(Instant.now().epochSecond)
         val duration = Duration.ofDays(365)
 
-        val certWithKey = sut.generateCA(keyPair, "Test CA", validFrom, duration)
-        certWithKey.key shouldContain "BEGIN PRIVATE KEY"
-        certWithKey.key shouldBe keyPair.private.toPem()
-        val pemObject = PEMParser(certWithKey.cert.reader()).readPemObject()
-        pemObject.type shouldBe "CERTIFICATE"
-        val certHolder = X509CertificateHolder(pemObject.content)
-        certHolder.issuer shouldBe X500Name("CN=Test CA")
-        certHolder.subject shouldBe X500Name("CN=Test CA")
-        certHolder.notBefore shouldBe Date.from(validFrom)
-        certHolder.notAfter shouldBe Date.from(validFrom.plus(duration))
-        val verifier = JcaContentVerifierProviderBuilder().build(keyPair.public)
-        certHolder.isSignatureValid(verifier) shouldBe true
+        val cert = sut.generateRootCert(keyPair, "CN=Test CA", validFrom, duration)
 
+        val issuer = cert.issuerX500Principal
+        issuer.name shouldBe "CN=Test CA"
+        val subject = cert.subjectX500Principal
+        subject.name shouldBe "CN=Test CA"
+        cert.notBefore shouldBe Date.from(validFrom)
+        cert.notAfter shouldBe Date.from(validFrom.plus(duration))
+        cert.verify(keyPair.public)
     }
+
+    @Test
+    fun `generateCert should generate a valid certificate`() {
+        val rootKeyPair: KeyPair = sut.generateKeyPair()
+        val rootCert = sut.generateRootCert(rootKeyPair, "CN=Test CA")
+        val keyPair: KeyPair = sut.generateKeyPair()
+        val validFrom = Instant.ofEpochSecond(Instant.now().epochSecond)
+        val duration = Duration.ofDays(365)
+
+        val cert =
+            sut.generateCert(rootCert, rootKeyPair.private, keyPair, "CN=Test CA", "CN=Test", validFrom, duration)
+
+        val issuer = cert.issuerX500Principal
+        issuer.name shouldBe "CN=Test CA"
+        val subject = cert.subjectX500Principal
+        subject.name shouldBe "CN=Test"
+        cert.notBefore shouldBe Date.from(validFrom)
+        cert.notAfter shouldBe Date.from(validFrom.plus(duration))
+        cert.verify(rootKeyPair.public)
+    }
+
 }
